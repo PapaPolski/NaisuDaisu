@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class PlayerMovement : MonoBehaviour
 {
+    enum MeleeWeapon { SUMO = 0, SWORD = 1, BAT = 2};
+    enum RangedWeapon { AK = 0, SHOTGUN = 1};
 
     public float speed = 10f;
     float horizontal, vertical;
@@ -22,13 +24,20 @@ public class PlayerMovement : MonoBehaviour
     public int currentPlayerHealth;
     private bool isInvuln = false;
 
+    private bool canMove;
+
     [SerializeField]
     private float invincibilityDurationSeconds;
 
     [SerializeField]
     private float invincibilityDeltaTime;
 
-     MeshRenderer playerMesh;
+    MeshRenderer playerMesh;
+
+    MeleeWeapon currentMeleeWeapon;
+    RangedWeapon currentRangedWeapon;
+    private bool canSwitchWeapon;
+    public float weaponSwitchingCooldown = 1.0f;
 
     private bool isMeleeAttacking;
     public GameObject meleeZone;
@@ -41,6 +50,8 @@ public class PlayerMovement : MonoBehaviour
         playerMesh = GetComponent<MeshRenderer>();
         isMeleeAttacking = false;
         meleeZone.SetActive(false);
+        canMove = true;
+        canSwitchWeapon = true; 
     }
 
     // Update is called once per frame
@@ -60,7 +71,7 @@ public class PlayerMovement : MonoBehaviour
 
         if(Input.GetMouseButtonDown(0))
         {
-            FireBullet();
+            Fire();
         }
 
         if(Input.GetMouseButtonDown(1))
@@ -82,6 +93,35 @@ public class PlayerMovement : MonoBehaviour
         {
             meleeZone.SetActive(false);
         }
+
+        if (canSwitchWeapon)
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha1) && currentMeleeWeapon != MeleeWeapon.SUMO)
+            {
+                Debug.Log("Switching to Sumo");
+                EquipWeapon(MeleeWeapon.SUMO);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2) && currentMeleeWeapon != MeleeWeapon.SWORD)
+            {
+                Debug.Log("Switching to Sword");
+                EquipWeapon(MeleeWeapon.SWORD);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3) && currentMeleeWeapon != MeleeWeapon.BAT)
+            {
+                Debug.Log("Switching to Bat");
+                EquipWeapon(MeleeWeapon.BAT);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha0) && currentRangedWeapon != RangedWeapon.SHOTGUN)
+            {
+                Debug.Log("Switching to Shotgun");
+                EquipWeapon(RangedWeapon.SHOTGUN);
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha9) && currentRangedWeapon != RangedWeapon.AK)
+            {
+                Debug.Log("Switching to AK");
+                EquipWeapon(RangedWeapon.AK);
+            }
+        }
     }
 
     private void FixedUpdate()
@@ -95,12 +135,20 @@ public class PlayerMovement : MonoBehaviour
 
         movement = new Vector3(horizontal, 0, vertical);
 
+        if(canMove)
         transform.Translate(movement * Time.deltaTime * speed, Space.World);
     }
 
-    void FireBullet()
+    void Fire()
     {
-        Instantiate(bullet, shooterObj.transform.position, shooterObj.transform.rotation);
+        switch (currentRangedWeapon)
+        {
+            case RangedWeapon.AK:
+                Instantiate(bullet, shooterObj.transform.position, shooterObj.transform.rotation);
+                break;
+            case RangedWeapon.SHOTGUN:
+                break;
+        }
     }
 
     public void TakeDamage(int damage)
@@ -124,9 +172,34 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
+    void EquipWeapon(MeleeWeapon meleeWeaponEquipped)
+    {
+        currentMeleeWeapon = meleeWeaponEquipped;
+        StartCoroutine(SwitchingCooldown());
+    }
+
+    void EquipWeapon(RangedWeapon rangedWeaponEquipped)
+    {
+        currentRangedWeapon = rangedWeaponEquipped;
+        StartCoroutine(SwitchingCooldown());
+    }
+
 
     void Melee()
     {
+        switch (currentMeleeWeapon)
+        {
+            case MeleeWeapon.SUMO:
+
+                break;
+            case MeleeWeapon.SWORD:
+
+                break;
+            case MeleeWeapon.BAT:
+
+                break;
+        }
+
         StartCoroutine(MeleeStrike());
     }
 
@@ -161,5 +234,15 @@ public class PlayerMovement : MonoBehaviour
 
             isMeleeAttacking = false;
         }
+    }
+
+    IEnumerator SwitchingCooldown()
+    {
+        Debug.Log("No switch");
+        canSwitchWeapon = false;
+
+        yield return new WaitForSeconds(weaponSwitchingCooldown);
+
+        canSwitchWeapon = true;
     }
 }
