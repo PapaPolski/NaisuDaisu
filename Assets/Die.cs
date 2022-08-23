@@ -104,12 +104,16 @@ public class Die : MonoBehaviour
 
 
             //IDEA 2 -> Re roll the die from the shot power, but reduce all pips by 1. More chaotic.
-            Throw(3000);
         }
 
         if(other.gameObject.CompareTag("Melee"))
         {
             Debug.Log("ouchie");
         }
+    }
+
+    private void OnParticleCollision(GameObject other)
+    {
+        Debug.Log("Contact");
     }
 }

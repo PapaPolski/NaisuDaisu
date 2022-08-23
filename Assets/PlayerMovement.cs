@@ -42,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
     private bool isMeleeAttacking;
     public GameObject meleeZone;
 
+    
     // Start is called before the first frame update
     void Start()
     {
@@ -147,6 +148,8 @@ public class PlayerMovement : MonoBehaviour
                 Instantiate(bullet, shooterObj.transform.position, shooterObj.transform.rotation);
                 break;
             case RangedWeapon.SHOTGUN:
+                ParticleSystem shotgun = gameObject.GetComponentInChildren<ParticleSystem>();
+                shotgun.Play();
                 break;
         }
     }
@@ -238,7 +241,6 @@ public class PlayerMovement : MonoBehaviour
 
     IEnumerator SwitchingCooldown()
     {
-        Debug.Log("No switch");
         canSwitchWeapon = false;
 
         yield return new WaitForSeconds(weaponSwitchingCooldown);
