@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+public enum MeleeWeapon { SUMO = 0, SWORD = 1, BAT = 2 };
+public enum RangedWeapon { AK = 0, SHOTGUN = 1 };
+
 public class PlayerMovement : MonoBehaviour
 {
-    enum MeleeWeapon { SUMO = 0, SWORD = 1, BAT = 2};
-    enum RangedWeapon { AK = 0, SHOTGUN = 1};
-
     public float speed = 10f;
     float horizontal, vertical;
     float verticalMoveLimit = 0.8f;
@@ -15,7 +15,7 @@ public class PlayerMovement : MonoBehaviour
     Rigidbody playerBody;
 
     public GameObject bullet;
-    public GameObject shooterObj;
+    public GameObject shooterObj; 
     public Image aimSprite;
 
     public Camera mainCamera;
@@ -34,14 +34,17 @@ public class PlayerMovement : MonoBehaviour
 
     MeshRenderer playerMesh;
 
-    MeleeWeapon currentMeleeWeapon;
-    RangedWeapon currentRangedWeapon;
+    public MeleeWeapon currentMeleeWeapon;
+    public RangedWeapon currentRangedWeapon;
     private bool canSwitchWeapon;
     public float weaponSwitchingCooldown = 1.0f;
 
     private bool isMeleeAttacking;
     public GameObject meleeZone;
 
+    public int maxAmmo;
+    private int currentAmmo;
+    public Text ammoText;
     
     // Start is called before the first frame update
     void Start()
@@ -52,7 +55,9 @@ public class PlayerMovement : MonoBehaviour
         isMeleeAttacking = false;
         meleeZone.SetActive(false);
         canMove = true;
-        canSwitchWeapon = true; 
+        canSwitchWeapon = true;
+        currentAmmo = maxAmmo;
+        ammoText.text = currentAmmo.ToString();
     }
 
     // Update is called once per frame
@@ -146,10 +151,14 @@ public class PlayerMovement : MonoBehaviour
         {
             case RangedWeapon.AK:
                 Instantiate(bullet, shooterObj.transform.position, shooterObj.transform.rotation);
+                currentAmmo--;
+                ammoText.text = currentAmmo.ToString();
                 break;
             case RangedWeapon.SHOTGUN:
                 ParticleSystem shotgun = gameObject.GetComponentInChildren<ParticleSystem>();
                 shotgun.Play();
+                currentAmmo--;
+                ammoText.text = currentAmmo.ToString();
                 break;
         }
     }
@@ -246,5 +255,18 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(weaponSwitchingCooldown);
 
         canSwitchWeapon = true;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("Pip"))
+        {
+            Debug.Log("Pip picked up");
+            currentAmmo++;
+            if (currentAmmo > maxAmmo)
+                currentAmmo = maxAmmo;
+            ammoText.text = currentAmmo.ToString();
+            Destroy(collision.gameObject);
+        }
     }
 }

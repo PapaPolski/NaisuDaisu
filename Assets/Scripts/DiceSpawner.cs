@@ -34,4 +34,6 @@ public class DiceSpawner : MonoBehaviour
     {
         totalRolledText.text = totalRolled.ToString();
     }
+
+
 }

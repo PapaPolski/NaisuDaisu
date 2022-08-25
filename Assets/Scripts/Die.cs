@@ -52,7 +52,8 @@ public class Die : MonoBehaviour
             diceSpawner.totalRolled += dieResult;
             foreach (Transform child in transform)
             {
-                child.gameObject.SetActive(false);
+                if(!child.gameObject.GetComponent<DieSide>())
+                        child.gameObject.SetActive(false);
             }
             diceSpawner.UpdateTotal();
         }
@@ -104,11 +105,6 @@ public class Die : MonoBehaviour
 
 
             //IDEA 2 -> Re roll the die from the shot power, but reduce all pips by 1. More chaotic.
-        }
-
-        if(other.gameObject.CompareTag("Melee"))
-        {
-            Debug.Log("ouchie");
         }
     }
 
