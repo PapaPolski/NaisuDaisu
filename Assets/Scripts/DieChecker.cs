@@ -8,7 +8,7 @@ public class DieChecker : MonoBehaviour
     {
 
         switch(other.gameObject.name)
-        {
+        { 
             case "Side1":
                 other.GetComponentInParent<Die>().dieResult = 6;
                 break;

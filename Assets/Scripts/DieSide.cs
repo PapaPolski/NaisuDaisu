@@ -43,6 +43,8 @@ public class DieSide : MonoBehaviour
                 pipsInSide.RemoveAt(j);            }
         }
 
+
+
         if(currentPipAmount == 0)
         {
            // Destroy(transform.parent.gameObject);
@@ -58,6 +60,11 @@ public class DieSide : MonoBehaviour
 
         return currentPipAmount;
     }
+
+    public void CutInHalf()
+    {
+
+    }
     
     private void OnTriggerEnter(Collider other)
     {
@@ -72,6 +79,7 @@ public class DieSide : MonoBehaviour
                     break;
                 case MeleeWeapon.SWORD:
                     Debug.Log(this.gameObject.name + " hit by sword");
+                    CutInHalf();
                     break;
                 case MeleeWeapon.BAT:
                     Debug.Log(this.gameObject.name + " hit by bat");
