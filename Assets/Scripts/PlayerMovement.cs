@@ -45,7 +45,12 @@ public class PlayerMovement : MonoBehaviour
     public int maxAmmo;
     private int currentAmmo;
     public Text ammoText;
-    
+
+    float meleeChargeTimer = 0.0f;
+    float meleeChargeMax = 1f;
+    public float currentBatPowerPercantage;
+    bool chargingMelee = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -80,11 +85,32 @@ public class PlayerMovement : MonoBehaviour
             Fire();
         }
 
-        if(Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1))
         {
-            Melee();
-            Debug.Log("Melee Attack");
+            if (currentMeleeWeapon == MeleeWeapon.BAT)
+            {
+                chargingMelee = true;
+            }
         }
+        if(Input.GetMouseButtonUp(1))
+        {
+            if (chargingMelee)
+            {
+                chargingMelee = false;
+                BatStrike(meleeChargeTimer);
+            }
+        }
+
+        if(chargingMelee)
+        {
+            meleeChargeTimer += Time.deltaTime;
+
+            if (meleeChargeTimer >= meleeChargeMax)
+            {
+                BatStrike(meleeChargeTimer);
+            }
+        }
+
 
         if(Input.GetKeyDown(KeyCode.Z))
         {
@@ -208,13 +234,19 @@ public class PlayerMovement : MonoBehaviour
 
                 break;
             case MeleeWeapon.BAT:
-
+                
                 break;
         }
-
-        StartCoroutine(MeleeStrike());
     }
 
+    void BatStrike(float chargeTime)
+    {
+        currentBatPowerPercantage = (chargeTime / meleeChargeMax) * 100;
+        meleeChargeTimer = 0f;
+        StartCoroutine(MeleeStrike());
+        Debug.Log(currentBatPowerPercantage);
+
+    }
     IEnumerator Invuln()
     {
         isInvuln = true;

@@ -13,6 +13,9 @@ public class Die : MonoBehaviour
 
     public Vector3 positionOfLastCheck;
 
+    public int currentDieSize;
+    public int maxDieSize;
+
     public void FixedUpdate()
     {
         if (this.transform.position.Equals(lastPos)) isMoving = false; else isMoving = true;
@@ -30,6 +33,8 @@ public class Die : MonoBehaviour
     {
         diceSpawner = GameObject.Find("DiceSpawner").GetComponent<DiceSpawner>() ;
         Throw(1000);
+        currentDieSize = 0;
+        maxDieSize = 3;
     }
 
     private void OnEnable()
@@ -37,9 +42,9 @@ public class Die : MonoBehaviour
         rb = this.GetComponent<Rigidbody>();
     }
 
-    void Throw(float speed)
+    public void Throw(float speed)
     {
-        transform.eulerAngles = new Vector3(transform.eulerAngles.x, Random.Range(0, 360), transform.eulerAngles.z);
+       // transform.eulerAngles = new Vector3(transform.eulerAngles.x, Random.Range(0, 360), transform.eulerAngles.z);
         Vector3 force = transform.forward;
         force = new Vector3(force.x, 1, force.z);
         rb.AddForce(force * speed);
@@ -47,8 +52,8 @@ public class Die : MonoBehaviour
 
     void DieStopped()
     {
-            GetComponentInChildren<DiceCheck>().CheckResult();
-            diceSpawner.UpdateTotal();
+        GetComponentInChildren<DiceCheck>().CheckResult();
+        diceSpawner.UpdateTotal();
     }
 
     private void OnTriggerEnter(Collider other)

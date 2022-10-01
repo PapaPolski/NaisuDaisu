@@ -7,8 +7,10 @@ public class DieSide : MonoBehaviour
     public int dieSide;
     public int currentPipAmount;
     private string sideName = "Side";
+    int maxPipsToLose = 2;
 
     public List<GameObject> pipsInSide = new List<GameObject>();
+    Die parentDie;
     
     // Start is called before the first frame update
     void Start()
@@ -24,6 +26,7 @@ public class DieSide : MonoBehaviour
                 pipsInSide.Add(child.gameObject);
             }
         }
+        parentDie = GetComponentInParent<Die>();
     }
     
     public void LosePips(int numberOfPips)
@@ -63,7 +66,13 @@ public class DieSide : MonoBehaviour
 
     public void CutInHalf()
     {
+        if(parentDie.currentDieSize < parentDie.maxDieSize)
+        {
+            if(parentDie.GetComponentInChildren<DiceCheck>().previousRollResult > 0)
+            {
 
+            }
+        }
     }
     
     private void OnTriggerEnter(Collider other)
@@ -83,12 +92,23 @@ public class DieSide : MonoBehaviour
                     break;
                 case MeleeWeapon.BAT:
                     Debug.Log(this.gameObject.name + " hit by bat");
-                    int random = Random.Range(1, 2);
-                    if(currentPipAmount >= 1)
-                        LosePips(random);
-
+                    HitByBat(other.transform.GetComponentInParent<PlayerMovement>().currentBatPowerPercantage);
                     break;
             }
+        }
+    }
+
+    void HitByBat(float hitPower)
+    {
+        this.GetComponentInParent<Die>().Throw(hitPower);
+        if (currentPipAmount >= 1)
+        {
+            //Add more code for calculating critical vs num of pips to remove
+                if(hitPower > 90)
+                {
+                    int random = Random.Range(1, 2);
+                    LosePips(random);
+                }
         }
     }
 }

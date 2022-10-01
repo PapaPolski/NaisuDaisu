@@ -22,7 +22,7 @@ public class DiceCheck : MonoBehaviour
         {
             if (hit.collider.isTrigger)
             {
-                Debug.Log(hit.collider.name);
+               // Debug.Log(hit.collider.name);
                 Debug.DrawRay(upwardsRay.origin, upwrd, Color.red, 20);
                 pipsToAdd = hit.collider.GetComponent<DieSide>().currentPipAmount;
             }
