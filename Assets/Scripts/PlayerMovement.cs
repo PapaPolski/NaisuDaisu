@@ -36,8 +36,9 @@ public class PlayerMovement : MonoBehaviour
 
     public MeleeWeapon currentMeleeWeapon;
     public RangedWeapon currentRangedWeapon;
-    private bool canSwitchWeapon;
+    public bool canSwitchWeapon;
     public float weaponSwitchingCooldown = 1.0f;
+    public bool canFire = true;
 
     private bool isMeleeAttacking;
     public GameObject meleeZone;
@@ -80,7 +81,7 @@ public class PlayerMovement : MonoBehaviour
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
 
-        if(Input.GetMouseButtonDown(0))
+        if(Input.GetMouseButtonDown(0) && canFire)
         {
             Fire();
         }
@@ -126,7 +127,7 @@ public class PlayerMovement : MonoBehaviour
             meleeZone.SetActive(false);
         }
 
-        if (canSwitchWeapon)
+       /* if (canSwitchWeapon)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1) && currentMeleeWeapon != MeleeWeapon.SUMO)
             {
@@ -153,7 +154,7 @@ public class PlayerMovement : MonoBehaviour
                 Debug.Log("Switching to AK");
                 EquipWeapon(RangedWeapon.AK);
             }
-        }
+        }*/
     }
 
     private void FixedUpdate()
@@ -173,20 +174,20 @@ public class PlayerMovement : MonoBehaviour
 
     void Fire()
     {
-        switch (currentRangedWeapon)
-        {
-            case RangedWeapon.AK:
-                Instantiate(bullet, shooterObj.transform.position, shooterObj.transform.rotation);
-                currentAmmo--;
-                ammoText.text = currentAmmo.ToString();
-                break;
-            case RangedWeapon.SHOTGUN:
-                ParticleSystem shotgun = gameObject.GetComponentInChildren<ParticleSystem>();
-                shotgun.Play();
-                currentAmmo--;
-                ammoText.text = currentAmmo.ToString();
-                break;
-        }
+            switch (currentRangedWeapon)
+            {
+                case RangedWeapon.AK:
+                    Instantiate(bullet, shooterObj.transform.position, shooterObj.transform.rotation);
+                    currentAmmo--;
+                    ammoText.text = currentAmmo.ToString();
+                    break;
+                case RangedWeapon.SHOTGUN:
+                    ParticleSystem shotgun = gameObject.GetComponentInChildren<ParticleSystem>();
+                    shotgun.Play();
+                    currentAmmo--;
+                    ammoText.text = currentAmmo.ToString();
+                    break;
+            }
     }
 
     public void TakeDamage(int damage)
@@ -210,13 +211,13 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    void EquipWeapon(MeleeWeapon meleeWeaponEquipped)
+    public void EquipWeapon(MeleeWeapon meleeWeaponEquipped)
     {
         currentMeleeWeapon = meleeWeaponEquipped;
         StartCoroutine(SwitchingCooldown());
     }
 
-    void EquipWeapon(RangedWeapon rangedWeaponEquipped)
+    public void EquipWeapon(RangedWeapon rangedWeaponEquipped)
     {
         currentRangedWeapon = rangedWeaponEquipped;
         StartCoroutine(SwitchingCooldown());
