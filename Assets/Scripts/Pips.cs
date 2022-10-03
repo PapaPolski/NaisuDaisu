@@ -4,22 +4,57 @@ using UnityEngine;
 
 public class Pips : MonoBehaviour
 {
-   SphereCollider collider;
+    SphereCollider thisCollider;
 
     [SerializeField] float timeToPickUp;
     [SerializeField] float pickUpDeltaTime;
     MeshRenderer mesh;
 
-   public void HitOffSide()
+   public void HitOffSide(string parentName)
     {
         Debug.Log("I'm free!");
-        collider = gameObject.GetComponent<SphereCollider>();
+        thisCollider = gameObject.GetComponent<SphereCollider>();
 
-        collider.enabled = true;
+        thisCollider.enabled = true;
         Rigidbody rb = gameObject.AddComponent(typeof(Rigidbody)) as Rigidbody;
-        //rb.AddForce()
+        
+        switch(parentName)
+        {
+            case "Side1":
+                Debug.Log("Im hit off 1!");
+                FlyOff(1);
+                break;
+            case "Side2":
+                Debug.Log("Im hit off 2!");
+                FlyOff(2);
+                break;
+            case "Side3":
+                FlyOff(3);
+                Debug.Log("Im hit off 3!");
+                break;
+            case "Side4":
+                FlyOff(4);
+                Debug.Log("Im hit off 4!");
+                break;
+            case "Side5":
+                FlyOff(5);
+                Debug.Log("Im hit off 5!");
+                break;
+            case "Side6":
+                FlyOff(6);
+                Debug.Log("Im hit off 6!");
+                break;
+
+        }
+
+
         mesh = GetComponent<MeshRenderer>();
         StartCoroutine(Delay());
+    }
+
+    void FlyOff(int dieSide)
+    {
+
     }
 
     IEnumerator Delay()

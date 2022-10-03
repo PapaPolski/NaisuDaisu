@@ -35,8 +35,8 @@ public class DieSide : MonoBehaviour
 
         for (int i = 0; i < numberOfPips; i++)
         {
+            pipsInSide[i].GetComponent<Pips>().HitOffSide(pipsInSide[i].transform.parent.name);
             pipsInSide[i].transform.SetParent(null);
-            pipsInSide[i].GetComponent<Pips>().HitOffSide();
         }
 
         for(int j = pipsInSide.Count - 1; j >= 0; j--)

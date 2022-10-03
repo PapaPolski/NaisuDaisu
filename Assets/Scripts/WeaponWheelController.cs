@@ -24,22 +24,20 @@ public class WeaponWheelController : MonoBehaviour
     {
         if(Input.GetMouseButtonDown(2))
         {
-            weaponWheelSelected = true;
-        }
-        if(Input.GetMouseButtonUp(2))
-        {
-            weaponWheelSelected = false;
+            weaponWheelSelected = !weaponWheelSelected;
         }
 
         if(weaponWheelSelected)
         {
             anim.SetBool("OpenWeaponWheel", true);
             player.canFire = false;
+            Time.timeScale = 0;
         }
         else
         {
             anim.SetBool("OpenWeaponWheel", false);
             player.canFire = true;
+            Time.timeScale = 1;
         }
 
         switch(weaponID)

@@ -685,6 +685,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b90ebb2e9eba1245b7da3203f71feee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  pipsToAdd: 0
+  previousRollResult: 0
 --- !u!1 &4481959340312786047
 GameObject:
   m_ObjectHideFlags: 0
@@ -950,8 +952,9 @@ MonoBehaviour:
   lastPos: {x: 0, y: 0, z: 0}
   dieResult: 0
   diceSpawner: {fileID: 0}
-  diceChecked: 0
-  DirectionValues: {x: 2, y: 6, z: 4}
+  positionOfLastCheck: {x: 0, y: 0, z: 0}
+  currentDieSize: 0
+  maxDieSize: 0
 --- !u!1001 &1992850613
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -83,7 +83,8 @@ public class PlayerMovement : MonoBehaviour
 
         if(Input.GetMouseButtonDown(0) && canFire)
         {
-            Fire();
+            if(currentAmmo > 0)
+                Fire();
         }
 
         if (Input.GetMouseButtonDown(1))
