@@ -66,13 +66,51 @@ public class DieSide : MonoBehaviour
 
     public void CutInHalf()
     {
-        if(parentDie.currentDieSize < parentDie.maxDieSize)
-        {
-            if(parentDie.GetComponentInChildren<DiceCheck>().previousRollResult > 0)
-            {
+        float dieResult = parentDie.GetComponentInChildren<DiceCheck>().previousRollResult;
 
+
+        if (parentDie.currentDieSize < parentDie.maxDieSize)
+        {
+            if(dieResult > 0)
+            {
+                if(dieResult == 1)
+                {
+                    Vector3 positionA = this.transform.position + new Vector3(1, 0, 0);
+                    SpawnNewDie(1, positionA);
+                    Vector3 positionB = this.transform.position + new Vector3(-1, 0, 0);
+                    SpawnNewDie(1, positionB);
+                }
+                
+                Debug.Log("cut!");                
+                if (dieResult % 2 == 0)
+                {
+                    float dieNumberToSpawn = dieResult / 2;
+                    Vector3 positionA = this.transform.position + new Vector3(1, 0, 0);
+                    SpawnNewDie((int)dieNumberToSpawn, positionA);
+                    Vector3 positionB = this.transform.position + new Vector3(-1, 0, 0);
+                    SpawnNewDie((int)dieNumberToSpawn, positionB);
+                }
+                else
+                {
+                    int a = Mathf.FloorToInt(dieResult / 2);
+                    Debug.Log(a);
+                    int b = Mathf.CeilToInt(dieResult / 2);
+                    Debug.Log(b);
+                    SpawnNewDie(a, this.transform.position + new Vector3(1, 0, 0));
+                    SpawnNewDie(b, this.transform.position + new Vector3(-1, 0, 0));
+                }
+                Destroy(gameObject.transform.parent.gameObject);
             }
         }
+    }
+
+    void SpawnNewDie(int diceNumberToSpawn, Vector3 position)
+    {
+        GameObject dicePrefab = GameObject.Find("DiceSpawner").GetComponent<DiceSpawner>().dicePrefab;
+        GameObject diceToSpawn = Instantiate(dicePrefab, (Vector3) position, this.transform.rotation);
+        diceToSpawn.GetComponent<Die>().DiceSpawned(diceNumberToSpawn);
+        diceToSpawn.GetComponent<Die>().currentDieSize += this.GetComponentInParent<Die>().currentDieSize;
+
     }
     
     private void OnTriggerEnter(Collider other)

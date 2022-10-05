@@ -13,7 +13,7 @@ public class Die : MonoBehaviour
 
     public Vector3 positionOfLastCheck;
 
-    public int currentDieSize;
+    public int currentDieSize = 1;
     public int maxDieSize;
 
     public void FixedUpdate()
@@ -32,9 +32,35 @@ public class Die : MonoBehaviour
     void Start()
     {
         diceSpawner = GameObject.Find("DiceSpawner").GetComponent<DiceSpawner>() ;
-        Throw(1000);
-        currentDieSize = 0;
         maxDieSize = 3;
+    }
+
+    public void DiceSpawned(int sideToDisplay)
+    {
+        switch(sideToDisplay)
+        {
+            case 0:
+                Throw(1000);
+                break;
+            case 1:
+                this.transform.rotation = Quaternion.Euler(0, 0, 180);
+                break;
+            case 2:
+                this.transform.rotation = Quaternion.Euler(0, 0, 90);
+                break;
+            case 3:
+                this.transform.rotation = Quaternion.Euler(90, 0, 0);
+                break;
+            case 4:
+                this.transform.rotation = Quaternion.Euler(-90, 0, 0);
+                break;
+            case 5:
+                this.transform.rotation = Quaternion.Euler(0, 0, -90);
+                break;
+            case 6:
+                this.transform.rotation = Quaternion.Euler(0, 0, 0);
+                break;
+        }
     }
 
     private void OnEnable()

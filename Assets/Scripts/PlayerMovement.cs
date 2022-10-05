@@ -89,10 +89,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetMouseButtonDown(1))
         {
-            if (currentMeleeWeapon == MeleeWeapon.BAT)
-            {
-                chargingMelee = true;
-            }
+            Melee();
         }
         if(Input.GetMouseButtonUp(1))
         {
@@ -233,10 +230,10 @@ public class PlayerMovement : MonoBehaviour
 
                 break;
             case MeleeWeapon.SWORD:
-
+                StartCoroutine(MeleeStrike());
                 break;
             case MeleeWeapon.BAT:
-                
+                chargingMelee = true;
                 break;
         }
     }

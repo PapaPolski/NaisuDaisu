@@ -46,12 +46,12 @@ public class WeaponWheelController : MonoBehaviour
                 selectedItem.sprite = noImage;
                 break;
             case 1: //Sumo
-                Debug.Log("Sumo");
+               // Debug.Log("Sumo");
                 player.EquipWeapon(MeleeWeapon.SUMO);
                 weaponWheelSelected = false;
                 break;
             case 2: //Sword
-                Debug.Log("Sword");
+               // Debug.Log("Sword");
                 player.EquipWeapon(MeleeWeapon.SWORD);
                 weaponWheelSelected = false;
                 break;
