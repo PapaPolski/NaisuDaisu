@@ -1322,10 +1322,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 824257331, guid: f44517bfc8c714b63af48bcb3f50ff0f, type: 3}
-      propertyPath: m_Camera
-      value: 
-      objectReference: {fileID: 963194227}
     - target: {fileID: 3957097926784280755, guid: f44517bfc8c714b63af48bcb3f50ff0f, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -1336,31 +1332,31 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3957097926784280755, guid: f44517bfc8c714b63af48bcb3f50ff0f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.77
+      value: 0.76952237
       objectReference: {fileID: 0}
     - target: {fileID: 3957097926784280755, guid: f44517bfc8c714b63af48bcb3f50ff0f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -1.6770461
+      value: -1.6776704
       objectReference: {fileID: 0}
     - target: {fileID: 3957097926784280755, guid: f44517bfc8c714b63af48bcb3f50ff0f, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 1
+      value: 0.00000010430811
       objectReference: {fileID: 0}
     - target: {fileID: 3957097926784280755, guid: f44517bfc8c714b63af48bcb3f50ff0f, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 3957097926784280755, guid: f44517bfc8c714b63af48bcb3f50ff0f, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3957097926784280755, guid: f44517bfc8c714b63af48bcb3f50ff0f, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3957097926784280755, guid: f44517bfc8c714b63af48bcb3f50ff0f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -180
       objectReference: {fileID: 0}
     - target: {fileID: 3957097926784280755, guid: f44517bfc8c714b63af48bcb3f50ff0f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -7769,7 +7765,7 @@ BoxCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2089764921}
   m_Material: {fileID: 0}
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 2.08, y: 1, z: 3.29}

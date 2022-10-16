@@ -8,16 +8,19 @@ public class DieSide : MonoBehaviour
     public int currentPipAmount;
     private string sideName = "Side";
     int maxPipsToLose = 2;
+    int colliderCounter; 
 
     public List<GameObject> pipsInSide = new List<GameObject>();
     Die parentDie;
-    
+    public DiceSpawner spawner;
+
     // Start is called before the first frame update
     void Start()
     {
         string dieSideNum = gameObject.name.Replace(sideName, "");
         dieSide = int.Parse(dieSideNum);
         currentPipAmount = dieSide;
+        colliderCounter = 0;
 
         foreach(Transform child in transform)
         {
@@ -27,6 +30,7 @@ public class DieSide : MonoBehaviour
             }
         }
         parentDie = GetComponentInParent<Die>();
+        spawner = GameObject.Find("DiceSpawner").GetComponent<DiceSpawner>();
     }
     
     public void LosePips(int numberOfPips)
@@ -66,8 +70,8 @@ public class DieSide : MonoBehaviour
 
     public void CutInHalf()
     {
+        Debug.Log("Cutting function called");
         float dieResult = parentDie.GetComponentInChildren<DiceCheck>().previousRollResult;
-
 
         if (parentDie.currentDieSize < parentDie.maxDieSize)
         {
@@ -80,9 +84,8 @@ public class DieSide : MonoBehaviour
                     Vector3 positionB = this.transform.position + new Vector3(-1, 0, 0);
                     SpawnNewDie(1, positionB);
                 }
-                
-                Debug.Log("cut!");                
-                if (dieResult % 2 == 0)
+                              
+                else if (dieResult % 2 == 0)
                 {
                     float dieNumberToSpawn = dieResult / 2;
                     Vector3 positionA = this.transform.position + new Vector3(1, 0, 0);
@@ -98,8 +101,14 @@ public class DieSide : MonoBehaviour
                     Debug.Log(b);
                     SpawnNewDie(a, this.transform.position + new Vector3(1, 0, 0));
                     SpawnNewDie(b, this.transform.position + new Vector3(-1, 0, 0));
-                }
+                }  
+                spawner.totalRolled -= this.transform.parent.GetComponentInChildren<DiceCheck>().pipsToAdd;
+                spawner.UpdateTotal();
                 Destroy(gameObject.transform.parent.gameObject);
+            }
+            else
+            {
+               // Destroy(this.transform.parent.gameObject);
             }
         }
     }
@@ -117,21 +126,27 @@ public class DieSide : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Melee"))
         {
-            PlayerMovement player = other.transform.GetComponentInParent<PlayerMovement>();
-            
-            switch (player.currentMeleeWeapon)
+            if (colliderCounter == 0)
             {
-                case MeleeWeapon.SUMO:
-                    Debug.Log(this.gameObject.name + " hit by sumo");
-                    break;
-                case MeleeWeapon.SWORD:
-                    Debug.Log(this.gameObject.name + " hit by sword");
-                    CutInHalf();
-                    break;
-                case MeleeWeapon.BAT:
-                    Debug.Log(this.gameObject.name + " hit by bat");
-                    HitByBat(other.transform.GetComponentInParent<PlayerMovement>().currentBatPowerPercantage);
-                    break;
+                colliderCounter++;
+                PlayerMovement player = other.transform.GetComponentInParent<PlayerMovement>();
+
+                switch (player.currentMeleeWeapon)
+                {
+                    case MeleeWeapon.SUMO:
+                        Debug.Log(this.gameObject.name + " hit by sumo");
+                        break;
+                    case MeleeWeapon.SWORD:
+                        Debug.Log(this.gameObject.name + " hit by sword");
+                        CutInHalf();
+                        break;
+                    case MeleeWeapon.BAT:
+                        Debug.Log(this.gameObject.name + " hit by bat");
+                        HitByBat(other.transform.GetComponentInParent<PlayerMovement>().currentBatPowerPercantage);
+                        break;
+                }
+                //other.gameObject.GetComponent<Collider>().enabled = false;
+                StartCoroutine(CounterCooldown());
             }
         }
     }
@@ -148,5 +163,11 @@ public class DieSide : MonoBehaviour
                     LosePips(random);
                 }
         }
+    }
+
+    IEnumerator CounterCooldown()
+    {
+        yield return new WaitForSeconds(1);
+        colliderCounter = 0;
     }
 }
