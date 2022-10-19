@@ -117,9 +117,8 @@ public class DieSide : MonoBehaviour
     {
         GameObject dicePrefab = GameObject.Find("DiceSpawner").GetComponent<DiceSpawner>().dicePrefab;
         GameObject diceToSpawn = Instantiate(dicePrefab, (Vector3) position, this.transform.rotation);
-        diceToSpawn.GetComponent<Die>().DiceSpawned(diceNumberToSpawn);
-        diceToSpawn.GetComponent<Die>().currentDieSize += this.GetComponentInParent<Die>().currentDieSize;
-
+        diceToSpawn.GetComponent<Die>().DiceSpawned(diceNumberToSpawn, parentDie.currentDieSize+1);
+       // diceToSpawn.GetComponent<Die>().currentDieSize += this.GetComponentInParent<Die>().currentDieSize;
     }
     
     private void OnTriggerEnter(Collider other)

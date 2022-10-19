@@ -13,7 +13,7 @@ public class Die : MonoBehaviour
 
     public Vector3 positionOfLastCheck;
 
-    public int currentDieSize = 1;
+    public int currentDieSize;
     public int maxDieSize;
 
     public int dieSideCounter;
@@ -38,7 +38,7 @@ public class Die : MonoBehaviour
         dieSideCounter = 0;
     }
 
-    public void DiceSpawned(int sideToDisplay)
+    public void DiceSpawned(int sideToDisplay, int dieSizeCounter)
     {
         switch(sideToDisplay)
         {
@@ -64,6 +64,10 @@ public class Die : MonoBehaviour
                 this.transform.rotation = Quaternion.Euler(0, 0, 0);
                 break;
         }
+        if (currentDieSize == 0)
+            currentDieSize = 1;
+
+        currentDieSize = dieSizeCounter;
     }
 
     private void OnEnable()
