@@ -75,7 +75,7 @@ public class DieSide : MonoBehaviour
 
         if (parentDie.currentDieSize < parentDie.maxDieSize)
         {
-            if(dieResult > 0)
+            if(dieResult > 0 && parentDie.dieSideCounter == 1)
             {
                 if(dieResult == 1)
                 {
@@ -126,9 +126,9 @@ public class DieSide : MonoBehaviour
     {
         if (other.gameObject.CompareTag("Melee"))
         {
-            if (colliderCounter == 0)
+            if (parentDie.dieSideCounter == 0)
             {
-                colliderCounter++;
+                parentDie.dieSideCounter++;
                 PlayerMovement player = other.transform.GetComponentInParent<PlayerMovement>();
 
                 switch (player.currentMeleeWeapon)
@@ -145,7 +145,6 @@ public class DieSide : MonoBehaviour
                         HitByBat(other.transform.GetComponentInParent<PlayerMovement>().currentBatPowerPercantage);
                         break;
                 }
-                //other.gameObject.GetComponent<Collider>().enabled = false;
                 StartCoroutine(CounterCooldown());
             }
         }
@@ -168,6 +167,6 @@ public class DieSide : MonoBehaviour
     IEnumerator CounterCooldown()
     {
         yield return new WaitForSeconds(1);
-        colliderCounter = 0;
+        parentDie.dieSideCounter = 0;
     }
 }

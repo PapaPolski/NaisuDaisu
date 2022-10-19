@@ -16,6 +16,8 @@ public class Die : MonoBehaviour
     public int currentDieSize = 1;
     public int maxDieSize;
 
+    public int dieSideCounter;
+
     public void FixedUpdate()
     {
         if (this.transform.position.Equals(lastPos)) isMoving = false; else isMoving = true;
@@ -33,6 +35,7 @@ public class Die : MonoBehaviour
     {
         diceSpawner = GameObject.Find("DiceSpawner").GetComponent<DiceSpawner>() ;
         maxDieSize = 3;
+        dieSideCounter = 0;
     }
 
     public void DiceSpawned(int sideToDisplay)
