@@ -77,7 +77,7 @@ public class Die : MonoBehaviour
 
     public void Throw(float speed)
     {
-       // transform.eulerAngles = new Vector3(transform.eulerAngles.x, Random.Range(0, 360), transform.eulerAngles.z);
+       //Throw in the direction of the baseball hit
         Vector3 force = transform.forward;
         force = new Vector3(force.x, 1, force.z);
         rb.AddForce(force * speed);

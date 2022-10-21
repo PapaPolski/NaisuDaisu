@@ -151,7 +151,7 @@ public class DieSide : MonoBehaviour
 
     void HitByBat(float hitPower)
     {
-        this.GetComponentInParent<Die>().Throw(hitPower);
+        this.GetComponentInParent<Die>().Throw(hitPower * 4);
         if (currentPipAmount >= 1)
         {
             //Add more code for calculating critical vs num of pips to remove
