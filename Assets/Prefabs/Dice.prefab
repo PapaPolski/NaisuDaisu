@@ -1312,8 +1312,11 @@ MonoBehaviour:
   diceSpawner: {fileID: 0}
   positionOfLastCheck: {x: 0, y: 0, z: 0}
   currentDieSize: 0
-  maxDieSize: 0
+  maxDieSize: 3
   dieSideCounter: 0
+  currentDieHits: 0
+  hitResetTime: 3
+  dieIsStunned: 0
 --- !u!1 &8728288594240048573
 GameObject:
   m_ObjectHideFlags: 0

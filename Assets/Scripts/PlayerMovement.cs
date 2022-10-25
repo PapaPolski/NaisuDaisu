@@ -243,7 +243,7 @@ public class PlayerMovement : MonoBehaviour
         currentBatPowerPercantage = (chargeTime / meleeChargeMax) * 100;
         meleeChargeTimer = 0f;
         StartCoroutine(MeleeStrike());
-        Debug.Log(currentBatPowerPercantage);
+       // Debug.Log(currentBatPowerPercantage);
 
     }
     IEnumerator Invuln()

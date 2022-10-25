@@ -140,7 +140,7 @@ public class DieSide : MonoBehaviour
                         CutInHalf();
                         break;
                     case MeleeWeapon.BAT:
-                        Debug.Log(this.gameObject.name + " hit by bat");
+                        //Debug.Log(this.gameObject.name + " hit by bat");
                         HitByBat(other.transform.GetComponentInParent<PlayerMovement>().currentBatPowerPercantage);
                         break;
                 }
@@ -151,6 +151,7 @@ public class DieSide : MonoBehaviour
 
     void HitByBat(float hitPower)
     {
+        parentDie.DieHitByBat();
         this.GetComponentInParent<Die>().Throw(hitPower * 4);
         if (currentPipAmount >= 1)
         {

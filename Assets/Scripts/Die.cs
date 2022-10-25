@@ -17,6 +17,14 @@ public class Die : MonoBehaviour
     public int maxDieSize;
 
     public int dieSideCounter;
+    public int currentDieHits;
+    int maxDieCombo;
+    bool inActiveCombo;
+    Coroutine comboCoroutine;
+
+    public float hitResetTime = 2f;
+
+    public bool dieIsStunned;
 
     public void FixedUpdate()
     {
@@ -36,6 +44,9 @@ public class Die : MonoBehaviour
         diceSpawner = GameObject.Find("DiceSpawner").GetComponent<DiceSpawner>() ;
         maxDieSize = 3;
         dieSideCounter = 0;
+        inActiveCombo = false;
+        maxDieCombo = 3;
+        dieIsStunned = false;
     }
 
     public void DiceSpawned(int sideToDisplay, int dieSizeCounter)
@@ -101,5 +112,48 @@ public class Die : MonoBehaviour
     private void OnParticleCollision(GameObject other)
     {
         Debug.Log("Contact");
+    }
+
+    public void DieHitByBat()
+    {
+        currentDieHits++;
+        if (currentDieHits >= maxDieCombo)
+        {
+            currentDieHits = maxDieCombo;
+            DieStunned();
+        }
+
+        if (!inActiveCombo)
+        {
+            comboCoroutine = StartCoroutine(HitCD());
+            inActiveCombo = true;
+        }
+        else if (inActiveCombo && !dieIsStunned)
+        {
+            StopCoroutine(comboCoroutine);
+            comboCoroutine = StartCoroutine(HitCD());
+        }
+}
+
+    void DieStunned()
+    {
+        if (!dieIsStunned)
+        {
+            dieIsStunned = true;
+            StartCoroutine(StunCooldown());
+        }
+    }
+
+    IEnumerator HitCD()
+    {
+        yield return new WaitForSeconds(hitResetTime);
+        inActiveCombo = false;
+        currentDieHits = 0;
+    }
+
+    IEnumerator StunCooldown()
+    {
+        yield return new WaitForSeconds(2f);
+        dieIsStunned = false;
     }
 }
