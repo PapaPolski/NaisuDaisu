@@ -52,6 +52,9 @@ public class PlayerMovement : MonoBehaviour
     public float currentBatPowerPercantage;
     bool chargingMelee = false;
 
+
+    public bool currentlyHoldingDice;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -81,17 +84,17 @@ public class PlayerMovement : MonoBehaviour
         horizontal = Input.GetAxis("Horizontal");
         vertical = Input.GetAxis("Vertical");
 
-        if(Input.GetMouseButtonDown(0) && canFire)
+        if(Input.GetMouseButtonDown(0) && canFire && !currentlyHoldingDice)
         {
             if(currentAmmo > 0)
                 Fire();
         }
 
-        if (Input.GetMouseButtonDown(1))
+        if (Input.GetMouseButtonDown(1) && !currentlyHoldingDice)
         {
             Melee();
         }
-        if(Input.GetMouseButtonUp(1))
+        if(Input.GetMouseButtonUp(1) && !currentlyHoldingDice)
         {
             if (chargingMelee)
             {
@@ -108,6 +111,23 @@ public class PlayerMovement : MonoBehaviour
             {
                 BatStrike(meleeChargeTimer);
             }
+        }
+
+        if(Input.GetMouseButtonDown(0) && currentlyHoldingDice)
+        {
+            Debug.Log("Sumo");
+            GameObject heldDie = GetComponentInChildren<Die>().gameObject;
+            //heldDie.transform.SetParent(null);
+            heldDie.transform.RotateAround(this.transform.position, Vector3.up, -180 * Time.deltaTime);
+            currentlyHoldingDice = false;
+        }
+        if(Input.GetMouseButtonDown(1) && currentlyHoldingDice)
+        {
+            Debug.Log("Throw");
+            GameObject heldDie = GetComponentInChildren<Die>().gameObject;
+            heldDie.transform.SetParent(null);
+            heldDie.GetComponent<Die>().Throw(10000);
+            currentlyHoldingDice = false;
         }
 
 

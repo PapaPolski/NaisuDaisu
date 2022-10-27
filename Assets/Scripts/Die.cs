@@ -26,6 +26,9 @@ public class Die : MonoBehaviour
 
     public bool dieIsStunned;
 
+    GameObject lassoTarget;
+    bool beingLassod;
+
     public void FixedUpdate()
     {
         if (this.transform.position.Equals(lastPos)) isMoving = false; else isMoving = true;
@@ -35,6 +38,17 @@ public class Die : MonoBehaviour
         {
             DieStopped();
             positionOfLastCheck = this.transform.position;
+        }
+
+        if(beingLassod)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, lassoTarget.transform.position, 10 * Time.deltaTime);
+            if(Vector3.Distance(transform.position, lassoTarget.transform.position) < 0.001f)
+            {
+                this.transform.SetParent(lassoTarget.transform);
+                beingLassod = false;
+                lassoTarget.GetComponentInParent<PlayerMovement>().currentlyHoldingDice = true;
+            }
         }
     }
 
@@ -47,6 +61,8 @@ public class Die : MonoBehaviour
         inActiveCombo = false;
         maxDieCombo = 3;
         dieIsStunned = false;
+        lassoTarget = GameObject.Find("LassoTarget");
+        beingLassod = false;
     }
 
     public void DiceSpawned(int sideToDisplay, int dieSizeCounter)
@@ -92,6 +108,7 @@ public class Die : MonoBehaviour
         Vector3 force = transform.forward;
         force = new Vector3(force.x, 1, force.z);
         rb.AddForce(force * speed);
+        beingLassod = false;
     }
 
     void DieStopped()
@@ -106,6 +123,7 @@ public class Die : MonoBehaviour
         {
             Destroy(other.gameObject);
             Debug.Log("Die with value " + dieResult + " has been shot");
+            Lasso();
         }
     }
 
@@ -142,6 +160,16 @@ public class Die : MonoBehaviour
             dieIsStunned = true;
             StartCoroutine(StunCooldown());
         }
+    }
+
+    void Lasso()
+    {
+        beingLassod = true;
+    }
+
+    public void DieFlip()
+    {
+
     }
 
     IEnumerator HitCD()
