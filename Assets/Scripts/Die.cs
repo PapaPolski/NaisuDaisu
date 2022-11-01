@@ -124,7 +124,6 @@ public class Die : MonoBehaviour
         if(other.gameObject.GetComponent<Bullet>())
         {
             Destroy(other.gameObject);
-            Debug.Log("Die with value " + dieResult + " has been shot");
             Lasso();
         }
     }
