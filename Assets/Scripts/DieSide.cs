@@ -141,7 +141,8 @@ public class DieSide : MonoBehaviour
                         break;
                     case MeleeWeapon.BAT:
                         //Debug.Log(this.gameObject.name + " hit by bat");
-                        HitByBat(other.transform.GetComponentInParent<PlayerMovement>().currentBatPowerPercantage);
+                        Vector3 hitDirection = (this.transform.position - other.transform.position) / (this.transform.position - other.transform.position).magnitude;
+                        HitByBat(other.transform.GetComponentInParent<PlayerMovement>().currentBatPowerPercantage, hitDirection);
                         break;
                 }
                 StartCoroutine(CounterCooldown());
@@ -149,10 +150,10 @@ public class DieSide : MonoBehaviour
         }
     }
 
-    void HitByBat(float hitPower)
+    void HitByBat(float hitPower, Vector3 direction)
     {
         parentDie.DieHitByBat();
-        this.GetComponentInParent<Die>().Throw(hitPower * 4);
+        this.GetComponentInParent<Die>().Throw(hitPower * 4, direction);
         if (currentPipAmount >= 1)
         {
             //Add more code for calculating critical vs num of pips to remove

@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class RequirementManager : MonoBehaviour
 {
+    public static RequirementManager instance { get; private set; }
+    
     //possible level requirements
     public int maxTotalNotToCross;
     public int minRequirement;
@@ -21,6 +23,20 @@ public class RequirementManager : MonoBehaviour
     DiceSpawner diceSpawner;
 
     bool timerIsRunning = false;
+
+    private void Awake()
+    {
+        // If there is an instance, and it's not me, delete myself.
+
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
+    }
 
     // Start is called before the first frame update
     void Start()
@@ -65,7 +81,7 @@ public class RequirementManager : MonoBehaviour
         timerIsRunning = true;
     }
 
-    void GameOver()
+    public void GameOver()
     {
         Debug.Log("Game Over");
 

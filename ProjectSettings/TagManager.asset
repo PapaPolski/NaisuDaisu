@@ -6,6 +6,8 @@ TagManager:
   tags:
   - Melee
   - Pip
+  - Die
+  - Floor
   layers:
   - Default
   - TransparentFX

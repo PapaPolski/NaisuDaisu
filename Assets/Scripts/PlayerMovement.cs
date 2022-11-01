@@ -126,7 +126,8 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("Throw");
             GameObject heldDie = GetComponentInChildren<Die>().gameObject;
             heldDie.transform.SetParent(null);
-            heldDie.GetComponent<Die>().Throw(10000);
+            Vector3 directionToThrow = (this.transform.position - heldDie.transform.position) / (this.transform.position - heldDie.transform.position).magnitude;
+            heldDie.GetComponent<Die>().Throw(10000, directionToThrow);
             currentlyHoldingDice = false;
         }
 
@@ -215,15 +216,15 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
-        currentPlayerHealth-= damage;
-
-        if(currentPlayerHealth <= 0)
+        if (currentPlayerHealth <= 0)
         {
-            Debug.Log("Game Over");
+            RequirementManager.instance.GameOver();
             return;
         }
 
-        if(!isInvuln)
+        currentPlayerHealth -= damage;
+
+        if (!isInvuln)
         {
             StartCoroutine(Invuln());
         }
@@ -318,6 +319,11 @@ public class PlayerMovement : MonoBehaviour
                 currentAmmo = maxAmmo;
             ammoText.text = currentAmmo.ToString();
             Destroy(collision.gameObject);
+        }
+
+        if(collision.gameObject.CompareTag("Die"))
+        {
+            TakeDamage(1);
         }
     }
 }

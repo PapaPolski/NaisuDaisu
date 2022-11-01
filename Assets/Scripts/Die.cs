@@ -29,6 +29,8 @@ public class Die : MonoBehaviour
     GameObject lassoTarget;
     bool beingLassod;
 
+    Vector3 startThrowRotation;
+
     public void FixedUpdate()
     {
         if (this.transform.position.Equals(lastPos)) isMoving = false; else isMoving = true;
@@ -70,7 +72,7 @@ public class Die : MonoBehaviour
         switch(sideToDisplay)
         {
             case 0:
-                Throw(1000);
+                Throw(1000, startThrowRotation = Random.insideUnitSphere);
                 break;
             case 1:
                 this.transform.rotation = Quaternion.Euler(0, 0, 180);
@@ -102,12 +104,12 @@ public class Die : MonoBehaviour
         rb = this.GetComponent<Rigidbody>();
     }
 
-    public void Throw(float speed)
+    public void Throw(float speed, Vector3 direction)
     {
        //Throw in the direction of the baseball hit
-        Vector3 force = transform.forward;
-        force = new Vector3(force.x, 1, force.z);
-        rb.AddForce(force * speed);
+        //Vector3 force = transform.forward;
+        //force = new Vector3(force.x, 1, force.z);
+        rb.AddForce(direction * speed);
         beingLassod = false;
     }
 
@@ -126,6 +128,15 @@ public class Die : MonoBehaviour
             Lasso();
         }
     }
+
+   /* private void OnCollisionEnter(Collision collision)
+    { 
+        if(collision.gameObject.CompareTag("Floor"))
+        {
+            Vector3 bounceDirection = Random.insideUnitSphere;
+            Throw(2000, bounceDirection);
+        }
+    }*/
 
     private void OnParticleCollision(GameObject other)
     {
