@@ -146,7 +146,7 @@ public class PlayerMovement : MonoBehaviour
             meleeZone.SetActive(false);
         }
 
-       /* if (canSwitchWeapon)
+        if (canSwitchWeapon)
         {
             if (Input.GetKeyDown(KeyCode.Alpha1) && currentMeleeWeapon != MeleeWeapon.SUMO)
             {
@@ -173,7 +173,7 @@ public class PlayerMovement : MonoBehaviour
                 Debug.Log("Switching to AK");
                 EquipWeapon(RangedWeapon.AK);
             }
-        }*/
+        }
     }
 
     private void FixedUpdate()
