@@ -12,14 +12,16 @@ public class WeaponIcon : MonoBehaviour
     Color startColor, tempColor;
     public bool isMeleeWeapon;
     Slider cooldown;
+    float countdownTimer;
 
     private void Awake()
     {
         player = GameObject.Find("Player").GetComponent<PlayerMovement>();
-        iconImage = this.GetComponent<Image>();
+        iconImage = this.GetComponentInChildren<Image>();
         startColor = iconImage.color;
         cooldown = GetComponentInChildren<Slider>();
         cooldown.value = 0;
+        countdownTimer = player.weaponSwitchingCooldown;
     }
 
     private void Start()
@@ -29,14 +31,21 @@ public class WeaponIcon : MonoBehaviour
 
     private void Update()
     {
-        if(!player.canSwitchWeapon)
+        if(player.canSwitchWeapon)
         {
             OnWeaponChange();
         }
+
+        if(countdownTimer > 0)
+        {
+            countdownTimer -= 1 * Time.deltaTime;
+        }
+        cooldown.value = countdownTimer;
     }
 
     public void OnWeaponChange()
     {
+        countdownTimer = player.weaponSwitchingCooldown;
         switch(isMeleeWeapon)
         {
             case false:
@@ -64,10 +73,5 @@ public class WeaponIcon : MonoBehaviour
                 }
                 break;
         } 
-    }
-
-    IEnumerator WeaponSwitchCooldown()
-    {
-
     }
 }
