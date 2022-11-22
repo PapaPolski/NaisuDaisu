@@ -45,7 +45,7 @@ public class PlayerMovement : MonoBehaviour
 
     public int maxAmmo;
     private int currentAmmo;
-    public Text ammoText;
+    public Text healthText;
 
     float meleeChargeTimer = 0.0f;
     float meleeChargeMax = 1f;
@@ -66,7 +66,7 @@ public class PlayerMovement : MonoBehaviour
         canMove = true;
         canSwitchWeapon = true;
         currentAmmo = maxAmmo;
-        ammoText.text = currentAmmo.ToString();
+        healthText.text = currentPlayerHealth.ToString();
     }
 
     // Update is called once per frame
@@ -117,17 +117,18 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.Log("Sumo");
             GameObject heldDie = GetComponentInChildren<Die>().gameObject;
-            //heldDie.transform.SetParent(null);
-            heldDie.transform.RotateAround(this.transform.position, Vector3.up, -180 * Time.deltaTime);
+            heldDie.GetComponent<Die>().DieFlip();
             currentlyHoldingDice = false;
+            heldDie.transform.SetParent(null);
         }
-        if(Input.GetMouseButtonDown(1) && currentlyHoldingDice)
+        if (Input.GetMouseButtonDown(1) && currentlyHoldingDice)
         {
             Debug.Log("Throw");
             GameObject heldDie = GetComponentInChildren<Die>().gameObject;
             heldDie.transform.SetParent(null);
             Vector3 directionToThrow = (this.transform.position - heldDie.transform.position) / (this.transform.position - heldDie.transform.position).magnitude;
             heldDie.GetComponent<Die>().Throw(10000, directionToThrow);
+            //disable damage for a second
             currentlyHoldingDice = false;
         }
 
@@ -198,13 +199,13 @@ public class PlayerMovement : MonoBehaviour
                 case RangedWeapon.AK:
                     Instantiate(bullet, shooterObj.transform.position, shooterObj.transform.rotation);
                     currentAmmo--;
-                    ammoText.text = currentAmmo.ToString();
+                   // ammoText.text = currentAmmo.ToString();
                     break;
                 case RangedWeapon.SHOTGUN:
                     ParticleSystem shotgun = gameObject.GetComponentInChildren<ParticleSystem>();
                     shotgun.Play();
                     currentAmmo--;
-                    ammoText.text = currentAmmo.ToString();
+                   // ammoText.text = currentAmmo.ToString();
                     break;
             }
     }
@@ -216,13 +217,14 @@ public class PlayerMovement : MonoBehaviour
             return;
         }
 
+        currentPlayerHealth -= damage;
+        healthText.text = currentPlayerHealth.ToString();
+
         if (currentPlayerHealth <= 0)
         {
             RequirementManager.instance.GameOver();
             return;
         }
-
-        currentPlayerHealth -= damage;
 
         if (!isInvuln)
         {
@@ -248,7 +250,7 @@ public class PlayerMovement : MonoBehaviour
         switch (currentMeleeWeapon)
         {
             case MeleeWeapon.SUMO:
-
+                StartCoroutine(MeleeStrike());
                 break;
             case MeleeWeapon.SWORD:
                 StartCoroutine(MeleeStrike());
@@ -294,11 +296,11 @@ public class PlayerMovement : MonoBehaviour
         {
             isMeleeAttacking = true;
 
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
 
             isMeleeAttacking = false;
         }
-    }
+    }  
 
     IEnumerator SwitchingCooldown()
     {
@@ -317,7 +319,7 @@ public class PlayerMovement : MonoBehaviour
             currentAmmo++;
             if (currentAmmo > maxAmmo)
                 currentAmmo = maxAmmo;
-            ammoText.text = currentAmmo.ToString();
+            //ammoText.text = currentAmmo.ToString();
             Destroy(collision.gameObject);
         }
 

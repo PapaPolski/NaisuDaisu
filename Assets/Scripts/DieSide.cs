@@ -117,7 +117,7 @@ public class DieSide : MonoBehaviour
     {
         GameObject dicePrefab = GameObject.Find("DiceSpawner").GetComponent<DiceSpawner>().dicePrefab;
         GameObject diceToSpawn = Instantiate(dicePrefab, (Vector3) position, this.transform.rotation);
-        diceToSpawn.GetComponent<Die>().DiceSpawned(diceNumberToSpawn, parentDie.currentDieSize+1);
+        diceToSpawn.GetComponentInChildren<Die>().DiceSpawned(diceNumberToSpawn, parentDie.currentDieSize+1);
        // diceToSpawn.GetComponent<Die>().currentDieSize += this.GetComponentInParent<Die>().currentDieSize;
     }
     
@@ -134,6 +134,7 @@ public class DieSide : MonoBehaviour
                 {
                     case MeleeWeapon.SUMO:
                         Debug.Log(this.gameObject.name + " hit by sumo");
+                        parentDie.DieFlip();
                         break;
                     case MeleeWeapon.SWORD:
                         Debug.Log(this.gameObject.name + " hit by sword");

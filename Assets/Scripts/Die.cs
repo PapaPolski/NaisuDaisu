@@ -31,6 +31,7 @@ public class Die : MonoBehaviour
 
     Vector3 startThrowRotation;
 
+
     public void FixedUpdate()
     {
         if (this.transform.position.Equals(lastPos)) isMoving = false; else isMoving = true;
@@ -179,7 +180,8 @@ public class Die : MonoBehaviour
 
     public void DieFlip()
     {
-
+        Debug.Log("flipping");
+        StartCoroutine(FlipDieAnim());
     }
 
     IEnumerator HitCD()
@@ -193,5 +195,24 @@ public class Die : MonoBehaviour
     {
         yield return new WaitForSeconds(2f);
         dieIsStunned = false;
+    }
+
+    IEnumerator FlipDieAnim()
+    {
+        float duration = 0.3f;
+        float elapsed = 0.0f;
+        Vector3 start = transform.eulerAngles;
+        Vector3 to = new Vector3(transform.eulerAngles.x + 180, transform.eulerAngles.y, transform.eulerAngles.z);
+
+
+        while (elapsed < duration)
+        {
+            transform.eulerAngles = Vector3.Slerp(start, to, elapsed / duration);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+
+        transform.eulerAngles = to;
+        yield return null;
     }
 }
