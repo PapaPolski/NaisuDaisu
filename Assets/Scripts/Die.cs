@@ -31,6 +31,8 @@ public class Die : MonoBehaviour
 
     Vector3 startThrowRotation;
 
+    public bool damageEnabled;
+
 
     public void FixedUpdate()
     {
@@ -66,6 +68,7 @@ public class Die : MonoBehaviour
         dieIsStunned = false;
         lassoTarget = GameObject.Find("LassoTarget");
         beingLassod = false;
+        damageEnabled = true;
     }
 
     public void DiceSpawned(int sideToDisplay, int dieSizeCounter)
@@ -214,5 +217,14 @@ public class Die : MonoBehaviour
 
         transform.eulerAngles = to;
         yield return null;
+    }
+
+    public IEnumerator PauseDamage()
+    {
+        damageEnabled = false;
+
+        yield return new WaitForSeconds(1f);
+
+        damageEnabled = true;
     }
 }

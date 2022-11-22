@@ -126,16 +126,10 @@ public class PlayerMovement : MonoBehaviour
             Debug.Log("Throw");
             GameObject heldDie = GetComponentInChildren<Die>().gameObject;
             heldDie.transform.SetParent(null);
+            heldDie.GetComponent<Die>().StartCoroutine("PauseDamage");
             Vector3 directionToThrow = (this.transform.position - heldDie.transform.position) / (this.transform.position - heldDie.transform.position).magnitude;
-            heldDie.GetComponent<Die>().Throw(10000, directionToThrow);
-            //disable damage for a second
+            heldDie.GetComponent<Die>().Throw(10000, directionToThrow); 
             currentlyHoldingDice = false;
-        }
-
-
-        if(Input.GetKeyDown(KeyCode.Z))
-        {
-            TakeDamage(1);
         }
 
         if(isMeleeAttacking)
@@ -325,7 +319,8 @@ public class PlayerMovement : MonoBehaviour
 
         if(collision.gameObject.CompareTag("Die"))
         {
-            TakeDamage(1);
+            if(collision.gameObject.GetComponent<Die>().damageEnabled)
+                TakeDamage(1);
         }
     }
 }
